@@ -9,9 +9,25 @@
  */
 
 
+var Promise = require('bluebird');
+var helper = require('../bare_minimum/promiseConstructor');
+var fs = require('fs');
+
 var combineFirstLineOfManyFiles = function(filePaths, writePath) {
- // TODO
+  var result = filePaths.map((data) => {
+     // retrieve the first line for each of the file at `filePath`
+    return helper.pluckFirstLineFromFileAsync(data);
+  });
+  // iterate over all the values in the Iterable into an array and return a promise that is fulfilled when all the items in the array are fulfilled
+  var pr = Promise.all(result)
+  .then((value) => { return (value.join('\n')); } )
+  .then((stringToWrite) => {
+    fs.writeFile(writePath, stringToWrite);
+  });
+
+  return pr;
 };
+
 
 // Export these functions so we can unit test them
 module.exports = {

@@ -1,7 +1,7 @@
 /**
  * Create the promise returning `Async` suffixed versions of the functions below,
  * Promisify them if you can, otherwise roll your own promise returning function
- */ 
+ */
 
 var fs = require('fs');
 var request = require('request');
@@ -20,14 +20,17 @@ var getGitHubProfile = function(user, callback) {
     if (err) {
       callback(err, null);
     } else if (body.message) {
-      callback(new Error('Failed to get GitHub profile: ' + body.message), null);
+      callback(new Error('Unable get GitHub profile: ' + body.message), null);
     } else {
       callback(null, body);
     }
   });
 };
 
-var getGitHubProfileAsync; // TODO
+// promisify takes a function whose last argument is a callback, and it returns a promise that resolves when that callback is called successfully and rejects if the callback is called with an error.
+
+// http://bluebirdjs.com/docs/api/promise.promisify.html
+var getGitHubProfileAsync = Promise.promisify(getGitHubProfile);
 
 
 // (2) Asyncronous token generation
@@ -38,25 +41,27 @@ var generateRandomToken = function(callback) {
   });
 };
 
-var generateRandomTokenAsync; // TODO
+//http://bluebirdjs.com/docs/api/promise.promisify.html
+var generateRandomTokenAsync = Promise.promisify(generateRandomToken);
 
 
 // (3) Asyncronous file manipulation
 var readFileAndMakeItFunny = function(filePath, callback) {
   fs.readFile(filePath, 'utf8', function(err, file) {
     if (err) { return callback(err); }
-   
+
     var funnyFile = file.split('\n')
       .map(function(line) {
-        return line + ' lol';
+        return line + ' funny sam lol';
       })
       .join('\n');
 
-    callback(funnyFile);
+    callback(err, funnyFile);
   });
 };
 
-var readFileAndMakeItFunnyAsync; // TODO
+// http://bluebirdjs.com/docs/api/promise.promisify.html
+var readFileAndMakeItFunnyAsync = Promise.promisify(readFileAndMakeItFunny);
 
 // Export these functions so we can test them and reuse them in later exercises
 module.exports = {

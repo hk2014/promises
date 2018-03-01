@@ -15,6 +15,7 @@
  */
 
 var Promise = require('bluebird');
+// var lib = require('../../lib/advancedChainingLib.js');
 var lib = require('../../lib/advancedChainingLib');
 
 // We're using Clarifai's API to recognize concepts in an image into a list of concepts
@@ -24,8 +25,11 @@ var lib = require('../../lib/advancedChainingLib');
 // `advancedChainingLib.js` file. When creating an API key, you can give it
 // the `Predict on Public and Custom Models` scope
 
-var searchCommonConceptsFromGitHubProfiles = function (githubHandles) {
+
+var searchCommonConceptsFromGitHubProfiles = function(githubHandles) {
+
 };
+
 
 // Export these functions so we can unit test them
 module.exports = {
